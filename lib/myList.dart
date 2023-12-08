@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:listat/db.dart';
+import 'db.dart';
 
 class MyList extends StatefulWidget {
   const MyList({Key? key}) : super(key: key);
@@ -77,10 +79,7 @@ class _MyListState extends State<MyList> {
                     ),
                   ];
                 },
-                onSelected: (String choice) {
-                  // Handle the selected choice
-                  print('Selected choice: $choice');
-                },
+                onSelected: (String choice) async {},
               ),
             ),
           )
