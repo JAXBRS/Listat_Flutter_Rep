@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:listat/db.dart';
-import 'db.dart';
 
 class MyList extends StatefulWidget {
   const MyList({Key? key}) : super(key: key);
@@ -15,6 +13,20 @@ class _MyListState extends State<MyList> {
   final List<String> options = ['new list', 'new item'];
   String? selectedOption;
 
+  int _selectedIndex = 0;
+  static List<Widget> _widgetOptions = <Widget>[
+    Text('Index 0: Home'),
+    Text('Index 1: Business'),
+    Text('Index 2: School'),
+    Text('Index 3: Settings'),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var addButton = Align(
@@ -28,7 +40,6 @@ class _MyListState extends State<MyList> {
           ),
           padding: const EdgeInsets.all(3),
           child: DropdownButton<String>(
-            // value: selectedOption,
             hint: const Text(
               'new',
               style: TextStyle(color: Colors.white),
@@ -44,7 +55,7 @@ class _MyListState extends State<MyList> {
             }).toList(),
             onChanged: (String? newValue) {
               setState(() {
-                selectedOption = selectedOption;
+                selectedOption = newValue;
               });
             },
           ),
@@ -87,7 +98,7 @@ class _MyListState extends State<MyList> {
     );
 
     return MaterialApp(
-      title: 'Add',
+      title: 'My List',
       home: Scaffold(
         appBar: AppBar(
           title: const Text('My list'),
@@ -99,7 +110,31 @@ class _MyListState extends State<MyList> {
             Expanded(child: listCard),
           ],
         ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home, color: Colors.blue),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search, color: Colors.blue),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list, color: Colors.blue), 
+              label: 'List',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person, color: Colors.blue),
+              label: 'Profile',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.blue,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }
 }
+
