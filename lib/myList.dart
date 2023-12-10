@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:listat/db.dart';
+import 'package:listat/objectbox.g.dart';
+import 'package:objectbox/objectbox.dart';
+import 'package:path_provider/path_provider.dart';
 
 class MyList extends StatefulWidget {
   const MyList({Key? key}) : super(key: key);
@@ -90,7 +94,17 @@ class _MyListState extends State<MyList> {
                     ),
                   ];
                 },
-                onSelected: (String choice) async {},
+                onSelected: (String choice) async {
+                  // late Store store;
+                  // initObjectBox() async {
+                  //   final docDir = await getApplicationDocumentsDirectory();
+                  //   store = Store(
+                  //     getObjectBoxModel(),
+                  //     directory: path.join(docDir.path, 'objectbox'),
+                  //   );
+                  //   print('saving to ${path.join(docDir.path, 'objectbox')}');
+                  // }
+                },
               ),
             ),
           )
@@ -121,7 +135,7 @@ class _MyListState extends State<MyList> {
               label: 'Search',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.list, color: Colors.blue), 
+              icon: Icon(Icons.list, color: Colors.blue),
               label: 'List',
             ),
             BottomNavigationBarItem(
@@ -137,4 +151,3 @@ class _MyListState extends State<MyList> {
     );
   }
 }
-
