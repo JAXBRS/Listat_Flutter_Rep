@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:listat/db.dart';
-import 'package:listat/objectbox.g.dart';
-import 'package:objectbox/objectbox.dart';
-import 'package:path_provider/path_provider.dart';
+import 'browseList.dart';
 
 class MyList extends StatefulWidget {
   const MyList({Key? key}) : super(key: key);
@@ -18,11 +15,13 @@ class _MyListState extends State<MyList> {
   String? selectedOption;
 
   int _selectedIndex = 0;
+
+  // Replace the Text widgets with your actual pages
   static List<Widget> _widgetOptions = <Widget>[
-    Text('Index 0: Home'),
-    Text('Index 1: Business'),
-    Text('Index 2: School'),
-    Text('Index 3: Settings'),
+    HomePage(),
+    SearchPage(),
+    browseList(), // Display browseList page when List icon is tapped
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -67,50 +66,6 @@ class _MyListState extends State<MyList> {
       ),
     );
 
-    var listCard = ListView(
-      children: [
-        for (int index = 1; index < 21; index++)
-          Card(
-            child: ListTile(
-              leading: const CircleAvatar(child: FlutterLogo()),
-              title: Text('list name $index'),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('list description $index'),
-                  const Text('items'),
-                ],
-              ),
-              trailing: PopupMenuButton<String>(
-                itemBuilder: (BuildContext context) {
-                  return [
-                    const PopupMenuItem<String>(
-                      value: 'Delete',
-                      child: Text('Delete'),
-                    ),
-                    const PopupMenuItem<String>(
-                      value: 'Edit',
-                      child: Text('Edit'),
-                    ),
-                  ];
-                },
-                onSelected: (String choice) async {
-                  // late Store store;
-                  // initObjectBox() async {
-                  //   final docDir = await getApplicationDocumentsDirectory();
-                  //   store = Store(
-                  //     getObjectBoxModel(),
-                  //     directory: path.join(docDir.path, 'objectbox'),
-                  //   );
-                  //   print('saving to ${path.join(docDir.path, 'objectbox')}');
-                  // }
-                },
-              ),
-            ),
-          )
-      ],
-    );
-
     return MaterialApp(
       title: 'My List',
       home: Scaffold(
@@ -121,7 +76,7 @@ class _MyListState extends State<MyList> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             addButton,
-            Expanded(child: listCard),
+            Expanded(child: _widgetOptions[_selectedIndex]),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -151,3 +106,31 @@ class _MyListState extends State<MyList> {
     );
   }
 }
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Home Page Content'),
+    );
+  }
+}
+
+class SearchPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Search Page Content'),
+    );
+  }
+}
+
+class ProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text('Profile Page Content'),
+    );
+  }
+}
+
