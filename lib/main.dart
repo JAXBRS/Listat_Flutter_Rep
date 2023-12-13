@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:listat/browseList.dart';
 import 'package:listat/myList.dart';
 
 void main() {
