@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:listat/myList.dart';
+import 'package:listat/createList.dart';
+import 'LogIn.dart';
+import 'database_test.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +16,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyList(),
+      home: const LoginPage(),
+      routes: {"createlist": (context) => CreateList()},
     );
   }
 }

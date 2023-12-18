@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'browseList.dart';
+import 'createList.dart';
+import 'createItem.dart';
 
 class MyList extends StatefulWidget {
   const MyList({Key? key}) : super(key: key);
@@ -12,23 +13,6 @@ class MyList extends StatefulWidget {
 
 class _MyListState extends State<MyList> {
   final List<String> options = ['new list', 'new item'];
-  String? selectedOption;
-
-  int _selectedIndex = 0;
-
-  // Replace the Text widgets with your actual pages
-  static List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
-    SearchPage(),
-    browseList(), // Display browseList page when List icon is tapped
-    ProfilePage(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +27,21 @@ class _MyListState extends State<MyList> {
           ),
           padding: const EdgeInsets.all(3),
           child: DropdownButton<String>(
+            onChanged: (String? newValue) {
+              if (newValue == 'new list') {
+                // Navigate to CreateList page when 'new list' is selected
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateList()),
+                );
+              } else if (newValue == 'new item') {
+                // Navigate to CreateItem page when 'new item' is selected
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateItem()),
+                );
+              }
+            },
             hint: const Text(
               'new',
               style: TextStyle(color: Colors.white),
@@ -56,80 +55,59 @@ class _MyListState extends State<MyList> {
                 ),
               );
             }).toList(),
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedOption = newValue;
-              });
-            },
           ),
         ),
       ),
     );
 
-    return MaterialApp(
-      title: 'My List',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('My list'),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            addButton,
-            Expanded(child: _widgetOptions[_selectedIndex]),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home, color: Colors.blue),
-              label: 'Home',
+    var listCard = ListView(
+      children: [
+        for (int index = 1; index < 21; index++)
+          Card(
+            child: ListTile(
+              leading: const CircleAvatar(child: FlutterLogo()),
+              title: Text('list name $index'),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('list description $index'),
+                  const Text('items'),
+                ],
+              ),
+              trailing: PopupMenuButton<String>(
+                itemBuilder: (BuildContext context) {
+                  return [
+                    const PopupMenuItem<String>(
+                      value: 'Delete',
+                      child: Text('Delete'),
+                    ),
+                    const PopupMenuItem<String>(
+                      value: 'Edit',
+                      child: Text('Edit'),
+                    ),
+                  ];
+                },
+                onSelected: (String choice) {
+                  // Handle the selected choice
+                  print('Selected choice: $choice');
+                },
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search, color: Colors.blue),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.list, color: Colors.blue),
-              label: 'List',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person, color: Colors.blue),
-              label: 'Profile',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.blue,
-          onTap: _onItemTapped,
-        ),
+          )
+      ],
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My list'),
       ),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Home Page Content'),
-    );
-  }
-}
-
-class SearchPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Search Page Content'),
-    );
-  }
-}
-
-class ProfilePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text('Profile Page Content'),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          addButton,
+          Expanded(child: listCard),
+        ],
+      ),
     );
   }
 }

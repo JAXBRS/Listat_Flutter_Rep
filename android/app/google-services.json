@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "712678684363",
+    "project_id": "listatflutter",
+    "storage_bucket": "listatflutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712678684363:android:383a0ddbddc4d220400d4e",
+        "android_client_info": {
+          "package_name": "com.example.listat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAsfZy4zJkxQfMMp5l5oBiBH4wEbPoS68"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
