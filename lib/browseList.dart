@@ -212,29 +212,8 @@ class _BrowseListState extends State<BrowseList> {
   }
 
   Padding cardPadding(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
-      child: ElevatedButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed("createlist");
-        },
-        style: ElevatedButton.styleFrom(
-          primary: const Color(0xFF50C2C9), // Background color #50C2C9
-          minimumSize:
-              const Size(double.infinity, 62), // Width 100% - 40px, Height 62px
-          padding: const EdgeInsets.symmetric(vertical: 8.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.0),
-          ),
-        ),
-        child: const Text(
-          'Create New List',
-          style: TextStyle(
-            color: Colors.white, // Text color white
-            fontSize: 18,
-          ),
-        ),
-      ),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
     );
   }
 }
