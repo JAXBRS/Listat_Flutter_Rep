@@ -21,13 +21,14 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> validateLogin() async {
     String email = emailController.text;
     String password = passwordController.text;
-    List<Map<String, dynamic>> response = await sqlDb.readData(
-        "SELECT * FROM listat WHERE email = '$email' AND password = '$password'");
-    //   {
-    //     'email': 'example@example.com',
-    //     'password': 'example_password',
-    //   },
-    // ];
+    List<Map<String, dynamic>> response = [
+      {
+        'email': 'example@example.com',
+        'password': 'example_password',
+      },
+    ];
+    //  await sqlDb.readData(
+    //  "SELECT * FROM listat WHERE email = '$email' AND password = '$password'");
 
     if (response.isNotEmpty) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
