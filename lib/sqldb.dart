@@ -39,9 +39,11 @@ class SqlDb {
     return response;
   }
 
-  Future<List<Map<String, dynamic>>> readData(String sql, [List<dynamic>? arguments]) async {
+  Future<List<Map<String, dynamic>>> readData(String sql,
+      [List<dynamic>? arguments]) async {
     Database dbClient = await db;
-    List<Map<String, dynamic>> response = await dbClient.rawQuery(sql, arguments);
+    List<Map<String, dynamic>> response =
+        await dbClient.rawQuery(sql, arguments);
     return response;
   }
 

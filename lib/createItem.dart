@@ -15,7 +15,8 @@ class CreateItem extends StatelessWidget {
           children: [
             Container(
               height: 207.0,
-              margin: const EdgeInsets.only(left: 34.0, right: 34.0, top: 14.0, bottom: 14.0),
+              margin: const EdgeInsets.only(
+                  left: 34.0, right: 34.0, top: 14.0, bottom: 14.0),
               child: ElevatedButton(
                 onPressed: () {
                   // Implement logic to handle image upload for the item
@@ -33,7 +34,8 @@ class CreateItem extends StatelessWidget {
             ),
             SizedBox(height: 16.0),
             Container(
-              margin: const EdgeInsets.only(left: 34.0, right: 34.0, top: 14.0, bottom: 14.0),
+              margin: const EdgeInsets.only(
+                  left: 34.0, right: 34.0, top: 14.0, bottom: 14.0),
               child: TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Item Title',
@@ -48,7 +50,8 @@ class CreateItem extends StatelessWidget {
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(left: 34.0, right: 34.0, top: 14.0, bottom: 14.0),
+              margin: const EdgeInsets.only(
+                  left: 34.0, right: 34.0, top: 14.0, bottom: 14.0),
               child: TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Item Description',
@@ -64,7 +67,8 @@ class CreateItem extends StatelessWidget {
             ),
             Container(
               height: 51.0,
-              margin: const EdgeInsets.only(left: 34.0, right: 34.0, top: 14.0, bottom: 14.0),
+              margin: const EdgeInsets.only(
+                  left: 34.0, right: 34.0, top: 14.0, bottom: 14.0),
               child: ElevatedButton(
                 onPressed: () {
                   // Implement logic to handle form submission for the item

@@ -1,20 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:listat/sqldb.dart';
+import 'package:listat/database_test.dart';
+import 'register_page.dart'; // Import the RegisterPage
 import 'package:shared_preferences/shared_preferences.dart';
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Save to Local Storage',
-      home: LoginPage(),
-    );
-  }
-}
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -24,95 +12,72 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  SqlDb sqlDb = SqlDb();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  final SqlDb sqlDb = SqlDb();
 
-  Future<void> saveToLocalStorage() async {
-    final List<Map<String, dynamic>> users = await sqlDb.readData(
-        "SELECT * FROM listat WHERE email = 'your_email_value' AND password = 'your_password_value';");
+  Future<void> validateLogin() async {
+    String email = emailController.text;
+    String password = passwordController.text;
+    List<Map<String, dynamic>> response = await sqlDb.readData(
+        "SELECT * FROM listat WHERE email = '$email' AND password = '$password'");
 
-    if (users.isNotEmpty) {
-      await validUser();
+    if (response.isNotEmpty) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('email', emailController.text);
+      await prefs.setString('password', passwordController.text);
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => DatabaseTest()));
     } else {
-      invalidUser();
+      showDialog(
+          context: context,
+          builder: (context) =>
+              AlertDialog(title: Text('Username or password is incorrect')));
     }
-  }
-
-  void invalidUser() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Invalid Credentials'),
-          content: const Text('Your email or password is invalid.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> validUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('email', emailController.text);
-    await prefs.setString('password', passwordController.text);
-    print('Data saved to local storage');
-
-    // Retrieve and print the saved data
-    String? savedEmail = prefs.getString('email');
-    String? savedPassword = prefs.getString('password');
-    print('Saved Email: $savedEmail');
-    print('Saved Password: $savedPassword');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appbarContent(),
-      body: centerContent(),
-    );
-  }
-
-  AppBar appbarContent() {
-    return AppBar(
-      title: const Text('Login Page'),
-    );
-  }
-
-  Center centerContent() {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextField(
+      appBar: AppBar(
+        backgroundColor: Color(0xFF50C2C9),
+        title: Text('Login', style: TextStyle(color: Colors.white)),
+      ),
+      body: Container(
+        padding: EdgeInsets.all(16.0),
+        child: ListView(
+          children: [
+            TextFormField(
               controller: emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-              ),
+              decoration: InputDecoration(
+                  hintText: "Email", border: OutlineInputBorder()),
+              keyboardType: TextInputType.emailAddress,
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: TextField(
+            SizedBox(height: 15.0),
+            TextFormField(
               controller: passwordController,
+              decoration: InputDecoration(
+                  hintText: "Password", border: OutlineInputBorder()),
               obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-              ),
             ),
-          ),
-          ElevatedButton(
-            onPressed: saveToLocalStorage,
-            child: const Text('Log In'),
-          ),
-        ],
+            SizedBox(height: 20.0),
+            MaterialButton(
+              textColor: Colors.white,
+              color: Color(0xFF50C2C9),
+              onPressed: validateLogin,
+              child: Text("Login"),
+              padding: EdgeInsets.symmetric(vertical: 15.0),
+              minWidth: double.infinity,
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => RegisterPage()));
+              },
+              child: Text("Don't have an account? Register here"),
+            ),
+          ],
+        ),
       ),
     );
   }

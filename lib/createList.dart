@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:listat/database_test.dart';
 import 'package:listat/sqldb.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateList extends StatefulWidget {
   @override
   _CreateListState createState() => _CreateListState();
+}
+
+Future<Map<String, String?>> retrieveSharedPreferencesData() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? email = prefs.getString('email');
+  String? password = prefs.getString('password');
+
+  return {
+    'email': email,
+    'password': password,
+  };
 }
 
 class _CreateListState extends State<CreateList> {
@@ -54,17 +66,23 @@ class _CreateListState extends State<CreateList> {
                     textColor: Colors.white,
                     color: Color(0xFF50C2C9), // Button color
                     onPressed: () async {
-                      int response = await sqlDb.insertData('''
+                      retrieveSharedPreferencesData().then((values) async {
+                        String? email = values['email'];
+                        String? password = values['password'];
+                        print('Email: $email');
+                        print('Password: $password');
+                        int response = await sqlDb.insertData('''
                           INSERT INTO listat ('name', 'description')
                           VALUES ("${List_name.text}", "${List_dec.text}")
                           ''');
-                      if (response > 0) {
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) => DatabaseTest()),
-                          (route) => false,
-                        );
-                      }
+                        if (response > 0) {
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => DatabaseTest()),
+                            (route) => false,
+                          );
+                        }
+                      });
                     },
                     child: Text("Create List"),
                     padding:

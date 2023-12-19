@@ -8,9 +8,15 @@ class DatabaseTest extends StatefulWidget {
   _DatabaseTestState createState() => _DatabaseTestState();
 }
 
-Future<String?> getFromLocalStorage() async {
+Future<Map<String, String?>> retrieveSharedPreferencesData() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString('email');
+  String? email = prefs.getString('email');
+  String? password = prefs.getString('password');
+
+  return {
+    'email': email,
+    'password': password,
+  };
 }
 
 class _DatabaseTestState extends State<DatabaseTest> {
@@ -19,11 +25,16 @@ class _DatabaseTestState extends State<DatabaseTest> {
   List lists = [];
 
   Future<void> readData() async {
-    String? userEmail = await getFromLocalStorage();
-    List<Map> response = await sqlDb
-        .readData("SELECT * FROM listat WHERE email = '$userEmail';");
-    lists.clear();
-    lists.addAll(response);
+    retrieveSharedPreferencesData().then((values) async {
+      String? email = values['email'];
+      String? password = values['password'];
+      print('Email: $email');
+      print('Password: $password');
+      List<Map> response =
+          await sqlDb.readData("SELECT * FROM listat WHERE email = '$email';");
+      lists.clear();
+      lists.addAll(response);
+    });
     isLoading = false;
     if (mounted) {
       setState(() {});

@@ -8,9 +8,29 @@ class BrowseList extends StatefulWidget {
   _BrowseListState createState() => _BrowseListState();
 }
 
-Future<String?> getFromLocalStorage() async {
+Future<Map<String, String?>> retrieveSharedPreferencesData() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString('email');
+  String? email = prefs.getString('email');
+  String? password = prefs.getString('password');
+
+  // Print the retrieved values
+  // print('Email: $email');
+  // print('Password: $password');
+
+  return {
+    'email': email,
+    'password': password,
+  };
+
+  //   this line is for you moayed if you want to store these in a variable you do so like this
+  //   retrieveSharedPreferencesData().then((values) {
+  //   String? email = values['email'];
+  //   String? password = values['password'];
+
+  //   // Print or use the retrieved email and password strings
+  //   print('Email: $email');
+  //   print('Password: $password');
+  // });
 }
 
 class _BrowseListState extends State<BrowseList> {
@@ -19,11 +39,16 @@ class _BrowseListState extends State<BrowseList> {
   List lists = [];
 
   Future<void> readData() async {
-    String? userEmail = await getFromLocalStorage();
-    List<Map> response = await sqlDb
-        .readData("SELECT * FROM listat WHERE email <> '$userEmail';");
-    lists.clear();
-    lists.addAll(response);
+    retrieveSharedPreferencesData().then((values) async {
+      String? email = values['email'];
+      String? password = values['password'];
+      print('Email: $email');
+      print('Password: $password');
+      List<Map> response =
+          await sqlDb.readData("SELECT * FROM listat WHERE email <> '$email';");
+      lists.clear();
+      lists.addAll(response);
+    });
     isLoading = false;
     if (mounted) {
       setState(() {});

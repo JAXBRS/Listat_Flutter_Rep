@@ -7,7 +7,12 @@ class EditList extends StatefulWidget {
   final String List_dec;
   final int id;
 
-  EditList({Key? key, required this.List_name, required this.List_dec, required this.id}) : super(key: key);
+  EditList(
+      {Key? key,
+      required this.List_name,
+      required this.List_dec,
+      required this.id})
+      : super(key: key);
 
   @override
   _EditListState createState() => _EditListState();
@@ -66,17 +71,16 @@ class _EditListState extends State<EditList> {
                     textColor: Colors.white,
                     color: Color(0xFF50C2C9),
                     onPressed: () async {
-                      int response = await sqlDb.updateData(
-                          '''
+                      int response = await sqlDb.updateData('''
                             UPDATE listat SET name = "${List_name.text}", 
                             description = "${List_dec.text}"
                             WHERE id = ${widget.id} 
-                          '''
-                      );
-                      if(response > 0){
+                          ''');
+                      if (response > 0) {
                         Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => DatabaseTest()),
-                              (route) => false,
+                          MaterialPageRoute(
+                              builder: (context) => DatabaseTest()),
+                          (route) => false,
                         );
                       }
                     },
