@@ -9,13 +9,12 @@ import 'package:listat/myList.dart';
 import 'routes.dart';
 
 void main() {
-  runApp(GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: AppPage.getnavbar(),
-      getPages: AppPage.routes));
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,6 +24,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const LoginPage(),
+      routes: {"createlist": (context) => CreateList()},
     );
   }
 }
